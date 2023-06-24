@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,6 +39,7 @@ public class SwapiProxyService {
      * @return a PersonInfo object containing character details, their home planet,
      *         films they appear in, and fastest vehicle they've driven.
      */
+    @Cacheable(value = "personinfo", key = "#name")
     public PersonInfo getPersonInfo(String name) {
         SwapiPerson swapiPerson = getSwapiPerson(name);
         String planetName = getPlanetName(swapiPerson);
@@ -54,6 +56,7 @@ public class SwapiProxyService {
      * @return A SwapiPerson object.
      * @throws PersonNotFoundException If the person is not found.
      */
+    @Cacheable(value = "people", key = "#name")
     private SwapiPerson getSwapiPerson(String name) {
         String swapiUrl = "https://swapi.dev/api/people/?search=" + name;
         SwapiResponse swapiResponse = restTemplate.getForObject(swapiUrl, SwapiResponse.class);
@@ -71,6 +74,7 @@ public class SwapiProxyService {
      * @param swapiPerson The SwapiPerson object to get the planet name from.
      * @return The name of the planet.
      */
+    @Cacheable(value = "planets", key = "#swapiPerson.homeworld")
     private String getPlanetName(SwapiPerson swapiPerson) {
         String planetUrl = swapiPerson.getHomeworld();
         SwapiPlanet swapiPlanet = restTemplate.getForObject(planetUrl, SwapiPlanet.class);
@@ -84,6 +88,7 @@ public class SwapiProxyService {
      * @param swapiPerson The SwapiPerson object to get the films from.
      * @return A list of FilmInfo objects.
      */
+    @Cacheable(value = "films", key = "#swapiPerson.name")
     private List<FilmInfo> getFilms(SwapiPerson swapiPerson) {
         return swapiPerson.getFilms().stream()
                 .map(url -> restTemplate.getForObject(url, SwapiFilm.class))
@@ -99,6 +104,7 @@ public class SwapiProxyService {
      * @return The name of the fastest vehicle, or null if the person has not driven
      *         any vehicles.
      */
+    @Cacheable(value = "vehicles", key = "#vehicleUrls")
     private String getFastestVehicleDriven(List<String> vehicleUrls) {
         if (vehicleUrls == null || vehicleUrls.isEmpty()) {
             return null;
