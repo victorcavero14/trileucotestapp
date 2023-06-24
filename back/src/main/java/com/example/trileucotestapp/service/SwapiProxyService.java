@@ -21,10 +21,23 @@ public class SwapiProxyService {
 
     private final RestTemplate restTemplate;
 
+    /**
+     * Constructor for the SwapiProxyService class.
+     *
+     * @param restTemplate an instance of RestTemplate for making HTTP requests.
+     */
     public SwapiProxyService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Retrieves comprehensive information about a Star Wars character by their
+     * name.
+     *
+     * @param name the name of the character.
+     * @return a PersonInfo object containing character details, their home planet,
+     *         films they appear in, and fastest vehicle they've driven.
+     */
     public PersonInfo getPersonInfo(String name) {
         SwapiPerson swapiPerson = getSwapiPerson(name);
         String planetName = getPlanetName(swapiPerson);
@@ -34,6 +47,13 @@ public class SwapiProxyService {
         return mapToPersonInfo(swapiPerson, planetName, films, fastestVehicleDriven);
     }
 
+    /**
+     * Retrieves a SwapiPerson object based on the provided name.
+     *
+     * @param name The name of the person to retrieve.
+     * @return A SwapiPerson object.
+     * @throws PersonNotFoundException If the person is not found.
+     */
     private SwapiPerson getSwapiPerson(String name) {
         String swapiUrl = "https://swapi.dev/api/people/?search=" + name;
         SwapiResponse swapiResponse = restTemplate.getForObject(swapiUrl, SwapiResponse.class);
@@ -45,22 +65,25 @@ public class SwapiProxyService {
         return swapiResponse.getResults().get(0);
     }
 
+    /**
+     * Retrieves the planet name of a SwapiPerson.
+     *
+     * @param swapiPerson The SwapiPerson object to get the planet name from.
+     * @return The name of the planet.
+     */
     private String getPlanetName(SwapiPerson swapiPerson) {
         String planetUrl = swapiPerson.getHomeworld();
         SwapiPlanet swapiPlanet = restTemplate.getForObject(planetUrl, SwapiPlanet.class);
 
-        /*
-         * Not necessary, I want to continue the execution even if the planet name is
-         * missing
-         * if (swapiPlanet == null) {
-         * throw new PlanetNotFoundException("Planet with url " + planetUrl +
-         * " not found");
-         * }
-         */
-
         return swapiPlanet != null ? swapiPlanet.getName() : null;
     }
 
+    /**
+     * Retrieves the films of a SwapiPerson.
+     *
+     * @param swapiPerson The SwapiPerson object to get the films from.
+     * @return A list of FilmInfo objects.
+     */
     private List<FilmInfo> getFilms(SwapiPerson swapiPerson) {
         return swapiPerson.getFilms().stream()
                 .map(url -> restTemplate.getForObject(url, SwapiFilm.class))
@@ -69,6 +92,13 @@ public class SwapiProxyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves the fastest vehicle driven by a SwapiPerson.
+     *
+     * @param vehicleUrls The URLs of the vehicles to get from the API.
+     * @return The name of the fastest vehicle, or null if the person has not driven
+     *         any vehicles.
+     */
     private String getFastestVehicleDriven(List<String> vehicleUrls) {
         if (vehicleUrls == null || vehicleUrls.isEmpty()) {
             return null;
@@ -86,6 +116,18 @@ public class SwapiProxyService {
         return fastestVehicle != null ? fastestVehicle.getName() : null;
     }
 
+    /**
+     * Maps the fields of a SwapiPerson object and other parameters to a PersonInfo
+     * object.
+     *
+     * @param swapiPerson          The SwapiPerson object to map from.
+     * @param planetName           The name of the person's home planet.
+     * @param films                A list of FilmInfo objects representing the films
+     *                             the person has been in.
+     * @param fastestVehicleDriven The name of the fastest vehicle the person has
+     *                             driven.
+     * @return A PersonInfo object with the mapped fields.
+     */
     private PersonInfo mapToPersonInfo(SwapiPerson swapiPerson, String planetName, List<FilmInfo> films,
             String fastestVehicleDriven) {
         PersonInfo personInfo = new PersonInfo();
