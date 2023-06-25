@@ -17,3 +17,6 @@ Otros directorios: Puedes tener otros directorios y paquetes según tus necesida
 # How to run backend
 ./gradlew build --stacktrace
 ./gradlew bootRun
+
+docker compose build
+docker compose up
