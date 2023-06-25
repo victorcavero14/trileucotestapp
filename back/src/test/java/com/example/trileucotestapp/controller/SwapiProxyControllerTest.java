@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.trileucotestapp.dto.PersonInfo;
+import com.example.trileucotestapp.error.PersonNotFoundException;
 import com.example.trileucotestapp.service.SwapiProxyService;
 
 class SwapiProxyControllerTest {
@@ -45,13 +46,17 @@ class SwapiProxyControllerTest {
     @Test
     void testGetPersonInfo_NonExistingName() {
         String name = "Non-existing character";
-        when(swapiProxyService.getPersonInfo(name)).thenReturn(null);
 
-        ResponseEntity<PersonInfo> response = swapiProxyController.getPersonInfo(name);
+        when(swapiProxyService.getPersonInfo(name))
+                .thenThrow(new PersonNotFoundException("Person with name " + name + " not found"));
+
+        try {
+            swapiProxyController.getPersonInfo(name);
+            fail("Expected a PersonNotFoundException to be thrown");
+        } catch (PersonNotFoundException e) {
+        }
 
         verify(swapiProxyService, times(1)).getPersonInfo(name);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals(null, response.getBody());
     }
+
 }

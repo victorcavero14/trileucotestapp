@@ -79,6 +79,11 @@ public class SwapiProxyService {
         String planetUrl = swapiPerson.getHomeworld();
         SwapiPlanet swapiPlanet = restTemplate.getForObject(planetUrl, SwapiPlanet.class);
 
+        /*
+         * We could throw a new PlanetNotFoundException but is preferer to return
+         * null instead
+         */
+
         return swapiPlanet != null ? swapiPlanet.getName() : null;
     }
 
