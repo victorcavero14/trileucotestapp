@@ -1,22 +1,38 @@
-- Mejor openapi que forefox ya que se sigue desarrollando
+# Prueba técnica Trileuco
 
-src/main/java: Contiene el código fuente principal de tu aplicación.
-com.example.trileucotestapp: Paquete base para tus clases Java.
-TrileucotestappApplication.java: Clase principal que inicia tu aplicación Spring Boot.
-controller: Carpeta para los controladores de tu API REST, donde puedes colocar el SwapiProxyController.java.
-model: Carpeta para las clases de modelos que mapean las respuestas de la API de Swapi.
-dto: Carpeta para las clases de modelos utilizadas para la respuesta del endpoint /swapi-proxy/person-info.
-src/main/resources: Contiene los recursos y archivos de configuración de tu aplicación.
-application.properties o application.yml: Archivo de configuración de Spring Boot.
-Otros recursos, como archivos de propiedades, archivos de configuración, plantillas, etc.
-src/test/java: Contiene los archivos de prueba de tu aplicación.
-com.example.trileucotestapp: Paquete base para las clases de prueba.
-controller: Carpeta para las pruebas del controlador, donde puedes colocar SwapiProxyControllerTest.java.
-Otros directorios: Puedes tener otros directorios y paquetes según tus necesidades, como servicios, repositorios, configuraciones adicionales, etc
+##  Víctor Manuel Cavero Gracia
 
-# How to run backend
-./gradlew build --stacktrace
-./gradlew bootRun
+## ¿Cómo usar el proyecto?
 
-docker compose build
-docker compose up
+## Más fácil con Dockercompose
+
+`docker compose up`
+
+###  Backend
+
+- [Swagger URL](http://localhost:8080/swagger-ui/index.html)
+- [Luke search](http://localhost:8080/swapi-proxy/person-info?name=Luke)
+
+####  Docker Backend
+
+- `sudo docker build -t back-trileucotestapp .`
+- `sudo docker run -p 8080:8080 back-trileucotestapp`
+
+####   Sin Docker Backend
+
+- `./gradlew build`
+- `./gradlew bootRun`
+
+### Frontend
+
+- [Frontend](http://localhost:3000/)
+
+####  Docker Frontend
+
+- `sudo docker build -t front-trileucotestapp .`
+- `docker run -p 3000:3000 front-trileucotestapp`
+
+#### Sin Docker Frontend
+
+- `npm install`
+- `npm start`
