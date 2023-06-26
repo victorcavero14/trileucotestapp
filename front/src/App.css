@@ -1,15 +1,15 @@
 .App {
   display: flex;
   flex-direction: column;
-  align-items: center;      /* This will align the child elements vertically in the center */
+  align-items: center;
   text-align: center;
-  height: 100vh;            /* You need to specify a height. Here it's set to the full viewport height. */
+  height: 100vh;
 }
 
 .Flex {
   display: flex;
-  justify-content: center;  /* This will align the child elements horizontally in the center */
-  align-items: center;      /* This will align the child elements vertically in the center */
+  justify-content: center;
+  align-items: center;
   text-align: center;
   margin-top: 1em;
 }

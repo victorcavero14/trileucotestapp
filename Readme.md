@@ -15,8 +15,8 @@
 
 ####  Docker Backend
 
-- `sudo docker build -t back-trileucotestapp .`
-- `sudo docker run -p 8080:8080 back-trileucotestapp`
+- `docker build -t back-trileucotestapp .`
+- `docker run -p 8080:8080 back-trileucotestapp`
 
 ####   Sin Docker Backend
 
@@ -29,8 +29,8 @@
 
 ####  Docker Frontend
 
-- `sudo docker build -t front-trileucotestapp .`
-- `docker run -p 3000:3000 front-trileucotestapp`
+- `docker build -t front-trileucotestapp .`
+- `docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules front-trileucotestapp`
 
 #### Sin Docker Frontend
 

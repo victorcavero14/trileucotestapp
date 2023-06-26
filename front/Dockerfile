@@ -4,11 +4,12 @@ FROM node:18
 # Set working directory
 WORKDIR /app
 
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
 # Copy local files of frontend to the container
 COPY . .
-
-# Install dependencies
-RUN npm install
 
 # Expose port 3000 for create-react-app
 EXPOSE 3000

@@ -1,11 +1,11 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as React from 'react';
 
-export default function BasicButtons({ handleFetch, loading }) {
+export default function BasicButton({ handleFetch, loading }) {
   return (
-    <LoadingButton 
+    <LoadingButton
       loading={loading}
-      variant="contained" 
+      variant="contained"
       onClick={handleFetch}>
       🔎
     </LoadingButton>
