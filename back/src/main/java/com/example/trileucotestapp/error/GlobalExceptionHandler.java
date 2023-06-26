@@ -9,6 +9,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Exception handler for handling the PersonNotFoundException.
+     *
+     * @param ex the PersonNotFoundException to handle.
+     * @return a ResponseEntity containing a CustomErrorResponse and an HTTP status code.
+     */
     @ExceptionHandler(PersonNotFoundException.class)
     protected ResponseEntity<CustomErrorResponse> handlePersonNotFound(
             PersonNotFoundException ex) {
@@ -17,6 +23,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Exception handler for handling the PlanetNotFoundException.
+     *
+     * @param ex the PlanetNotFoundException to handle.
+     * @return a ResponseEntity containing a CustomErrorResponse and an HTTP status code.
+     */
     @ExceptionHandler(PlanetNotFoundException.class)
     protected ResponseEntity<CustomErrorResponse> handlePlanetNotFound(
             PlanetNotFoundException ex) {
